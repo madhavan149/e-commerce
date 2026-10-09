@@ -6,6 +6,8 @@ import com.example.e_commerce.Model.Product;
 import com.example.e_commerce.Service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/product")
 public class ProductController {
@@ -16,6 +18,11 @@ public class ProductController {
         this.productService = productService;
     }
 
+
+    @GetMapping
+    public List<Product> AllProduct(){
+        return productService.AllProduct();
+    }
 
     @PostMapping("/add")
     public Product addProduct(@RequestBody ProductDTO productRequest){

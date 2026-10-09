@@ -8,6 +8,8 @@ import com.example.e_commerce.Repository.CategoryRepository;
 import com.example.e_commerce.Repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductService {
 
@@ -35,5 +37,9 @@ public class ProductService {
         productRepository.save(product);
 
         return product;
+    }
+
+    public List<Product> AllProduct() {
+        return productRepository.findAll();
     }
 }
