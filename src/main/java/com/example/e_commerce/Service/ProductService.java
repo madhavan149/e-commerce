@@ -3,6 +3,7 @@ package com.example.e_commerce.Service;
 
 import com.example.e_commerce.DTO.ProductRequest;
 import com.example.e_commerce.DTO.ProductResponse;
+import com.example.e_commerce.DTO.ProuductUpdateRequest;
 import com.example.e_commerce.Exception.ResourceNotFoundException;
 import com.example.e_commerce.Model.Category;
 import com.example.e_commerce.Model.Product;
@@ -27,27 +28,18 @@ public class ProductService {
     public ProductResponse addProduct(ProductRequest productRequest) {
 
         Category category = categoryReposiitory.findById(productRequest.getCategory_id())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
         Product product = Product.builder()
                 .name(productRequest.getName())
-                .descrpition(productRequest.getDescrpition())
+                .description(productRequest.getDescription())
                 .price(productRequest.getPrice())
                 .stock_quantity(productRequest.getStock_quantity())
                 .category(category)
                 .build();
 
         Product savedProduct = productRepository.save(product);
-
-        ProductResponse response = new ProductResponse();
-        response.setId(savedProduct.getId());
-        response.setName(savedProduct.getName());
-        response.setDescription(savedProduct.getDescrpition());
-        response.setPrice(savedProduct.getPrice());
-        response.setStockQuantity(savedProduct.getStock_quantity());
-        response.setCategoryName(savedProduct.getCategory().getName());
-
-        return response;
+        return toResponse(savedProduct);
     }
 
     public List<ProductResponse> getAllProducts() {
@@ -58,16 +50,7 @@ public class ProductService {
 
         for (Product product : products) {
 
-            ProductResponse response = new ProductResponse();
-
-            response.setId(product.getId());
-            response.setName(product.getName());
-            response.setDescription(product.getDescrpition());
-            response.setPrice(product.getPrice());
-            response.setStockQuantity(product.getStock_quantity());
-            response.setCategoryName(product.getCategory().getName());
-
-            responses.add(response);
+            responses.add(toResponse(product));
         }
 
         return responses;
@@ -78,38 +61,29 @@ public class ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
-        ProductResponse response = new ProductResponse();
-
-        response.setId(product.getId());
-        response.setCategoryName(product.getCategory().getName());
-        response.setDescription(product.getDescrpition());
-        response.setName(product.getName());
-        response.setStockQuantity(product.getStock_quantity());
-        response.setPrice(product.getPrice());
-
-        return response;
+        return toResponse(product);
 
     }
 
-    public Product updateProduct(Long id, ProductRequest request) {
+    public ProductResponse updateProduct(Long id, ProuductUpdateRequest request) {
 
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("cannot found this id"));
 
-        if(existingProduct.getName() != null){
+        if(request.getName() != null){
             existingProduct.setName(request.getName());
         }
 
-        if(existingProduct.getPrice() != null){
+        if(request.getPrice() != null){
             existingProduct.setPrice(request.getPrice());
         }
 
-        if(existingProduct.getStock_quantity() != null){
+        if(request.getStock_quantity() != null){
             existingProduct.setStock_quantity(request.getStock_quantity());
         }
 
-        if(existingProduct.getDescrpition() != null){
-            existingProduct.setDescrpition(request.getDescrpition());
+        if(request.getDescrpition() != null){
+            existingProduct.setDescription(request.getDescrpition());
         }
 
         if(request.getCategory_id() != null){
@@ -118,7 +92,9 @@ public class ProductService {
             existingProduct.setCategory(newCategory);
         }
 
-        return productRepository.save(existingProduct);
+        productRepository.save(existingProduct);
+
+        return toResponse(existingProduct);
     }
 
 
@@ -129,5 +105,18 @@ public class ProductService {
 
         productRepository.delete(product);
 
+    }
+
+    private ProductResponse toResponse(Product product) {
+        ProductResponse response = new ProductResponse();
+        response.setId(product.getId());
+        response.setName(product.getName());
+        response.setDescription(product.getDescription());
+        response.setPrice(product.getPrice());
+        response.setStockQuantity(product.getStock_quantity());
+        response.setCategoryName(
+                product.getCategory() != null ? product.getCategory().getName() : null
+        );
+        return response;
     }
 }

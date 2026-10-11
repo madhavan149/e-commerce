@@ -29,8 +29,7 @@ public class CategoryController {
 
         Category category = categoryService.saveCategoryByName(name);
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(category);
+        return ResponseEntity.ok(category);
     }
 
     @GetMapping

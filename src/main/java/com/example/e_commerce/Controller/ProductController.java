@@ -3,8 +3,11 @@ package com.example.e_commerce.Controller;
 
 import com.example.e_commerce.DTO.ProductRequest;
 import com.example.e_commerce.DTO.ProductResponse;
+import com.example.e_commerce.DTO.ProuductUpdateRequest;
 import com.example.e_commerce.Model.Product;
 import com.example.e_commerce.Service.ProductService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,13 +35,14 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest productRequest){
-        return ResponseEntity.ok(productService.addProduct(productRequest));
+    public ResponseEntity<ProductResponse> addProduct(@Valid @RequestBody ProductRequest productRequest){
+        ProductResponse response = productService.addProduct(productRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductRequest request){
-        Product product = productService.updateProduct(id, request);
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @RequestBody ProuductUpdateRequest request){
+        ProductResponse product = productService.updateProduct(id, request);
 
         return ResponseEntity.ok(product);
     }

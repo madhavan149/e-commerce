@@ -41,9 +41,14 @@ public class CategoryService {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
 
-        if(newName.equals(category.getName())){
+        if (newName.equals(category.getName())) {
             return category;
         }
+
+        if(categoryRepository.existsByName(newName)) {
+            throw new ResourceAlreadyExistsException("The category '" + newName + "' already exists.");
+        }
+
         category.setName(newName);
 
         return categoryRepository.save(category);
@@ -60,7 +65,6 @@ public class CategoryService {
         }
 
         productRepository.saveAll(products);
-
         categoryRepository.delete(category);
 
     }
