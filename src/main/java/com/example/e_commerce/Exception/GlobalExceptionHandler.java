@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(DataIntegrityViolationException.class)
   public ResponseEntity<String> handleDuplicate(DataIntegrityViolationException ex) {
-    return ResponseEntity.status(HttpStatus.CONFLICT).body("Category already exists");
+    return ResponseEntity.status(HttpStatus.CONFLICT).body("Data integrity violation: duplicate value or invalid reference");
   }
 
 
