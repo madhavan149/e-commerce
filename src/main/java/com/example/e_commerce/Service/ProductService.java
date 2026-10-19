@@ -9,10 +9,15 @@ import com.example.e_commerce.Model.Category;
 import com.example.e_commerce.Model.Product;
 import com.example.e_commerce.Repository.CategoryRepository;
 import com.example.e_commerce.Repository.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ProductService {
@@ -62,6 +67,32 @@ public class ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         return toResponse(product);
+
+    }
+
+    private static final Set<String> ALLOWED_SORT_FIELDS =
+            Set.of("id", "name", "price", "stockQuantity");
+
+    public Page<ProductResponse> getProducts(int page, int size, String sortBy, String direction) {
+
+        if (!ALLOWED_SORT_FIELDS.contains(sortBy)) {
+            throw new IllegalArgumentException("Invalid sort field: " + sortBy);
+        }
+
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+            return productRepository.findAll(pageable)
+                    .map(product -> new ProductResponse(
+                            product.getId(),
+                            product.getName(),
+                            product.getDescription(),
+                            product.getPrice(),
+                            product.getStock_quantity(),
+                            product.getCategory().getName()
+                    ));
 
     }
 
