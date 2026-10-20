@@ -1,7 +1,7 @@
 package com.example.e_commerce.Controller;
 
-import com.example.e_commerce.DTO.UserRequest;
-import com.example.e_commerce.Service.UserService;
+import com.example.e_commerce.DTO.RegisterRequest;
+import com.example.e_commerce.Service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,18 +10,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 public class UserController {
 
-    private final UserService userService;
+    private final AuthService authService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(AuthService authService) {
+        this.authService = authService;
     }
 
     @PostMapping
-    public void register(@Valid @RequestBody UserRequest request){
-        userService.register(request);
+    public void register(@RequestBody RegisterRequest request){
+        authService.register(request);
     }
 
-    private void login(@Valid @RequestBody UserRequest request){
-        userService.login(request);
-    }
+
 }

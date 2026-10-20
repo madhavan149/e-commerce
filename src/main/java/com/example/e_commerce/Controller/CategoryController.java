@@ -2,14 +2,13 @@ package com.example.e_commerce.Controller;
 
 import com.example.e_commerce.Model.Category;
 import com.example.e_commerce.Service.CategoryService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/api/category")
 public class CategoryController {
 
     final private CategoryService categoryService;
