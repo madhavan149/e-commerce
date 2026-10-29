@@ -1,8 +1,11 @@
 package com.example.e_commerce.Service;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -12,7 +15,9 @@ import java.util.Map;
 @Service
 public class JwtService {
 
-    private static final String secret = "ecomprodjwtsecretfG9saTNuWDJyNXA4cTNsNnc4eDkm";
+    @Value("${jwt.secret}")
+    private String secret;
+
 
     public String generateToken(String username){
         Map<String,  Object> claims = new HashMap<>();
@@ -21,7 +26,7 @@ public class JwtService {
                 .claims(claims)
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 30))
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
                 .signWith(getKey())
                 .compact();
     }
@@ -32,5 +37,19 @@ public class JwtService {
     }
 
 
+    public String extractUsername(String token) {
+        return parseClaims(token).getSubject();
+    }
+
+    public boolean isTokenValid(String token, UserDetails user) {
+        Claims c = parseClaims(token);
+        return c.getSubject().equals(user.getUsername())
+                && c.getExpiration().after(new Date());
+    }
+
+    private Claims parseClaims(String token){
+        return Jwts.parser().verifyWith(getKey()).build()
+                .parseSignedClaims(token).getPayload();
+    }
 
 }
