@@ -17,8 +17,6 @@ public class JwtService {
 
     @Value("${jwt.secret}")
     private String secret;
-
-
     public String generateToken(String username){
         Map<String,  Object> claims = new HashMap<>();
 
