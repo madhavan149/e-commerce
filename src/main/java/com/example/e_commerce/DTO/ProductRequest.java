@@ -22,8 +22,8 @@ public class ProductRequest {
 
     @NotNull(message = "Stock quantity is required")
     @PositiveOrZero(message = "Stock cannot be negative")
-    private Long stock_quantity;
+    private Long stockQuantity;
 
     @NotNull(message = "Category id is required")
-    private Long category_id;
+    private Long categoryId;
 }

@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "products")
+@Table(name = "product")
 public class Product {
 
     @Id
@@ -25,7 +25,7 @@ public class Product {
 
     private BigDecimal price;
 
-    private Long stock_quantity;
+    private Long stockQuantity;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

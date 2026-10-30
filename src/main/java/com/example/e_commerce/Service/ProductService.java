@@ -32,14 +32,14 @@ public class ProductService {
 
     public ProductResponse addProduct(ProductRequest productRequest) {
 
-        Category category = categoryReposiitory.findById(productRequest.getCategory_id())
+        Category category = categoryReposiitory.findById(productRequest.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
         Product product = Product.builder()
                 .name(productRequest.getName())
                 .description(productRequest.getDescription())
                 .price(productRequest.getPrice())
-                .stock_quantity(productRequest.getStock_quantity())
+                .stockQuantity(productRequest.getStockQuantity())
                 .category(category)
                 .build();
 
@@ -84,15 +84,7 @@ public class ProductService {
                 : Sort.by(sortBy).ascending();
 
         Pageable pageable = PageRequest.of(page, size, sort);
-            return productRepository.findAll(pageable)
-                    .map(product -> new ProductResponse(
-                            product.getId(),
-                            product.getName(),
-                            product.getDescription(),
-                            product.getPrice(),
-                            product.getStock_quantity(),
-                            product.getCategory().getName()
-                    ));
+        return productRepository.findAll(pageable).map(this::toResponse);
 
     }
 
@@ -109,16 +101,16 @@ public class ProductService {
             existingProduct.setPrice(request.getPrice());
         }
 
-        if(request.getStock_quantity() != null){
-            existingProduct.setStock_quantity(request.getStock_quantity());
+        if(request.getStockQuantity() != null){
+            existingProduct.setStockQuantity(request.getStockQuantity());
         }
 
-        if(request.getDescrpition() != null){
-            existingProduct.setDescription(request.getDescrpition());
+        if(request.getDescription() != null){
+            existingProduct.setDescription(request.getDescription());
         }
 
-        if(request.getCategory_id() != null){
-            Category newCategory = categoryReposiitory.findById(request.getCategory_id())
+        if(request.getCategoryId() != null){
+            Category newCategory = categoryReposiitory.findById(request.getCategoryId())
                     .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
             existingProduct.setCategory(newCategory);
         }
@@ -144,7 +136,7 @@ public class ProductService {
         response.setName(product.getName());
         response.setDescription(product.getDescription());
         response.setPrice(product.getPrice());
-        response.setStockQuantity(product.getStock_quantity());
+        response.setStockQuantity(product.getStockQuantity());
         response.setCategoryName(
                 product.getCategory() != null ? product.getCategory().getName() : null
         );
