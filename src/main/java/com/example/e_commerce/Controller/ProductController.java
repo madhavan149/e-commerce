@@ -1,9 +1,9 @@
 package com.example.e_commerce.Controller;
 
 
-import com.example.e_commerce.DTO.ProductRequest;
-import com.example.e_commerce.DTO.ProductResponse;
-import com.example.e_commerce.DTO.ProuductUpdateRequest;
+import com.example.e_commerce.DTO.Product.ProductRequest;
+import com.example.e_commerce.DTO.Product.ProductResponse;
+import com.example.e_commerce.DTO.Product.ProuductUpdateRequest;
 import com.example.e_commerce.Service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;

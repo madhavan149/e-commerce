@@ -1,7 +1,7 @@
 package com.example.e_commerce.Service;
 
-import com.example.e_commerce.DTO.LoginRequest;
-import com.example.e_commerce.DTO.RegisterRequest;
+import com.example.e_commerce.DTO.User.LoginRequest;
+import com.example.e_commerce.DTO.User.RegisterRequest;
 import com.example.e_commerce.Exception.ResourceAlreadyExistsException;
 import com.example.e_commerce.Model.Role;
 import com.example.e_commerce.Model.Users;

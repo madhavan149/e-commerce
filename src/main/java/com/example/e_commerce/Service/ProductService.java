@@ -1,9 +1,9 @@
 package com.example.e_commerce.Service;
 
 
-import com.example.e_commerce.DTO.ProductRequest;
-import com.example.e_commerce.DTO.ProductResponse;
-import com.example.e_commerce.DTO.ProuductUpdateRequest;
+import com.example.e_commerce.DTO.Product.ProductRequest;
+import com.example.e_commerce.DTO.Product.ProductResponse;
+import com.example.e_commerce.DTO.Product.ProuductUpdateRequest;
 import com.example.e_commerce.Exception.ResourceNotFoundException;
 import com.example.e_commerce.Model.Category;
 import com.example.e_commerce.Model.Product;

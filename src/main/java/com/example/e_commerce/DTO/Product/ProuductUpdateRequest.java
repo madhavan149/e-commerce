@@ -1,4 +1,4 @@
-package com.example.e_commerce.DTO;
+package com.example.e_commerce.DTO.Product;
 
 import jakarta.validation.constraints.*;
 import lombok.Getter;
@@ -8,22 +8,18 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class ProductRequest {
+public class ProuductUpdateRequest {
 
-    @NotBlank(message = "Name is required")
+    @Pattern(regexp = ".*\\S.*", message = "Name cannot be blank")
     private String name;
-
 
     private String description;
 
-    @NotNull(message = "Price is required")
     @PositiveOrZero(message = "Price cannot be negative")
     private BigDecimal price;
 
-    @NotNull(message = "Stock quantity is required")
     @PositiveOrZero(message = "Stock cannot be negative")
     private Long stockQuantity;
 
-    @NotNull(message = "Category id is required")
     private Long categoryId;
 }

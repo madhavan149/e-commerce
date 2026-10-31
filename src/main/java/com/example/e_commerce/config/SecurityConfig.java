@@ -43,12 +43,14 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/error").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/api/product/**", "/api/category/**")
                         .permitAll()
 
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+
+                        .requestMatchers("/api/order/**").hasRole("CUSTOMER")
 
                         .requestMatchers("/api/product/**", "/api/category/**")
                         .hasRole("ADMIN")

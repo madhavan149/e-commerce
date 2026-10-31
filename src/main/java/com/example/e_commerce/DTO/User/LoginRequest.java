@@ -1,7 +1,6 @@
-package com.example.e_commerce.DTO;
+package com.example.e_commerce.DTO.User;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data

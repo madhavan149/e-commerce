@@ -1,7 +1,7 @@
 package com.example.e_commerce.Controller;
 
-import com.example.e_commerce.DTO.LoginRequest;
-import com.example.e_commerce.DTO.RegisterRequest;
+import com.example.e_commerce.DTO.User.LoginRequest;
+import com.example.e_commerce.DTO.User.RegisterRequest;
 import com.example.e_commerce.Service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
