@@ -29,6 +29,10 @@ public class AuthService {
 
     public String register(RegisterRequest request) {
 
+        if (userRepository.existsByName(request.getName())) {
+            throw new ResourceAlreadyExistsException("Username already taken");
+        }
+
         if(userRepository.existsByEmail(request.getEmail())){
             throw new ResourceAlreadyExistsException("Email already registered");
         }
