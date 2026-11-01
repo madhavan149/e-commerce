@@ -51,4 +51,10 @@ public class OrderService {
         return OrderResponse.from(saved);
     }
 
+    public OrderResponse getMyOrder(Long id, Long userId) {
+
+        return orderRepository.findByIdAndUserId(id, userId)
+                .map(OrderResponse::from)
+                .orElseThrow(() -> new ResourceNotFoundException("order not found"));
+    }
 }

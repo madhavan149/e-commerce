@@ -1,6 +1,7 @@
 package com.example.e_commerce.Model;
 
 
+import com.example.e_commerce.Exception.OutOfStockException;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,5 +32,14 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Version
+    private Long version;
+
+    public void reserve(long qty) {
+        if (stockQuantity == null || stockQuantity < qty) {
+            throw new OutOfStockException(id);
+        }
+        stockQuantity -= qty;
+    }
 
 }
