@@ -4,6 +4,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -50,6 +51,18 @@ public class GlobalExceptionHandler {
   public ResponseEntity<Map<String, String>> handleBadBody(HttpMessageNotReadableException ex) {
     return ResponseEntity.badRequest()
             .body(Map.of("error", "Request body is missing or invalid JSON"));
+  }
+
+  @ExceptionHandler(OutOfStockException.class)
+  public ResponseEntity<Map<String, String>> handleOutOfStock(OutOfStockException ex) {
+    return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(Map.of("error", ex.getMessage()));
+  }
+
+  @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
+  public ResponseEntity<Map<String, String>> handleConflict(ObjectOptimisticLockingFailureException ex) {
+    return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(Map.of("error", "High demand, please try again"));
   }
 
 

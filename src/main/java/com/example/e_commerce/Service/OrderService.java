@@ -8,9 +8,12 @@ import com.example.e_commerce.Model.OrderItem;
 import com.example.e_commerce.Model.Product;
 import com.example.e_commerce.Repository.OrderRepository;
 import com.example.e_commerce.Repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Service
 public class OrderService {
@@ -24,24 +27,44 @@ public class OrderService {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     public OrderResponse placeOrder(Long userId, OrderRequest request){
+
+        Map<Long, Integer> merged = new LinkedHashMap<>();
+        for (OrderRequest.Item line : request.items()) {
+
+            Long productId = line.productId();
+            Integer qyt = line.qty();
+
+            if(merged.containsKey(productId)){
+                merged.put(productId, merged.get(productId) + qyt);
+            }
+            else{
+                merged.put(productId, qyt);
+            }
+
+        }
+
         Order order = new Order();
         order.setUserId(userId);
 
         BigDecimal total = BigDecimal.ZERO;
 
-        for(OrderRequest.Item line : request.items()){
-            Product product = productRepository.findById(line.productId())
+        for(Map.Entry<Long, Integer> e : merged.entrySet()){
+
+            Product product = productRepository.findById(e.getKey())
                     .orElseThrow(() -> new ResourceNotFoundException("product not found"));
+
+            product.reserve(e.getValue());
 
             OrderItem item = new OrderItem();
 
             item.setProductId(product.getId());
-            item.setQty(line.qty());
+            item.setQty(e.getValue());
             item.setUnitPrice(product.getPrice());
             order.addItem(item);
 
-            total = total.add(product.getPrice().multiply(BigDecimal.valueOf(line.qty())));
+            total = total.add(product.getPrice().multiply(BigDecimal.valueOf(e.getValue())));
 
 
         }

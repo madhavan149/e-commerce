@@ -25,9 +25,7 @@ public class OrderFacade {
             }
             catch (ObjectOptimisticLockingFailureException e){
 
-                attempt++;
-
-                if (attempt >= MAX_ATTEMPTS){
+                if(++attempt >= MAX_ATTEMPTS){
                     throw e;
                 }
 
