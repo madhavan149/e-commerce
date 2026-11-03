@@ -1,8 +1,6 @@
-package com.example.e_commerce.config;
+package com.example.e_commerce.Security;
 
-import com.example.e_commerce.Model.CustomUserDetail;
 import com.example.e_commerce.Service.CustomUserDetailService;
-import com.example.e_commerce.Service.JwtService;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

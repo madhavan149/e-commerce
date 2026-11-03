@@ -65,5 +65,11 @@ public class GlobalExceptionHandler {
             .body(Map.of("error", "High demand, please try again"));
   }
 
+  @ExceptionHandler(InvalidStatusTransitionException.class)
+  public ResponseEntity<String> handleInvalidStatusTransition(InvalidStatusTransitionException ex) {
+    return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(ex.getMessage());
+  }
+
 
 }

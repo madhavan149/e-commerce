@@ -1,7 +1,7 @@
 package com.example.e_commerce.DTO.Order;
 
 import com.example.e_commerce.Model.Order;
-import com.example.e_commerce.OrderStatus;
+import com.example.e_commerce.Model.OrderStatus;
 
 import java.math.BigDecimal;
 import java.time.Instant;

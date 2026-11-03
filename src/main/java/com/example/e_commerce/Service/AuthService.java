@@ -6,6 +6,7 @@ import com.example.e_commerce.Exception.ResourceAlreadyExistsException;
 import com.example.e_commerce.Model.Role;
 import com.example.e_commerce.Model.Users;
 import com.example.e_commerce.Repository.UserRepository;
+import com.example.e_commerce.Security.JwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

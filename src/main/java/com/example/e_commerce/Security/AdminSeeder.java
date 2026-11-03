@@ -1,4 +1,4 @@
-package com.example.e_commerce.config;
+package com.example.e_commerce.Security;
 
 import com.example.e_commerce.Model.Role;
 import com.example.e_commerce.Model.Users;

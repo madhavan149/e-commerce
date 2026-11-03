@@ -1,6 +1,6 @@
 package com.example.e_commerce.Model;
 
-import com.example.e_commerce.OrderStatus;
+import com.example.e_commerce.Exception.InvalidStatusTransitionException;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -38,6 +38,14 @@ public class Order {
     public void addItem(OrderItem item){
         item.setOrder(this);
         this.items.add(item);
+    }
+
+    public void changeStatus(OrderStatus next) {
+        if (!status.canMoveTo(next)) {
+            throw new InvalidStatusTransitionException(status, next);
+        }
+
+        this.status = next;
     }
 
 }

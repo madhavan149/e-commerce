@@ -1,6 +1,7 @@
 package com.example.e_commerce.config;
 
 import com.example.e_commerce.Exception.CustomAccessDeniedHandler;
+import com.example.e_commerce.Security.JwtAuthenticationFilter;
 import com.example.e_commerce.Service.CustomUserDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
