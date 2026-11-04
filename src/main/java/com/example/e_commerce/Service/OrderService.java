@@ -5,6 +5,7 @@ import com.example.e_commerce.DTO.Order.OrderResponse;
 import com.example.e_commerce.Exception.ResourceNotFoundException;
 import com.example.e_commerce.Model.Order;
 import com.example.e_commerce.Model.OrderItem;
+import com.example.e_commerce.Model.OrderStatus;
 import com.example.e_commerce.Model.Product;
 import com.example.e_commerce.Repository.OrderRepository;
 import com.example.e_commerce.Repository.ProductRepository;
@@ -26,6 +27,7 @@ public class OrderService {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
     }
+
 
     @Transactional
     public OrderResponse placeOrder(Long userId, OrderRequest request){
@@ -80,4 +82,35 @@ public class OrderService {
                 .map(OrderResponse::from)
                 .orElseThrow(() -> new ResourceNotFoundException("order not found"));
     }
+
+    @Transactional
+    public OrderResponse changeStatus(Long id, OrderStatus status) {
+
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("order not found"));
+
+        order.changeStatus(status);
+        return OrderResponse.from(order);
+    }
+
+    @Transactional
+    public OrderResponse cancelOrder(Long orderId, Long userId) {
+
+        Order order = orderRepository.findByIdAndUserId(orderId, userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+
+        order.changeStatus(OrderStatus.CANCELLED);
+
+        for (OrderItem item: order.getItems()){
+            Product product = productRepository.findById(item.getProductId())
+                    .orElseThrow(() -> new ResourceNotFoundException("product not found"));
+
+            product.restock(item.getQty());
+        }
+
+        return OrderResponse.from(order);
+
+    }
+
+
 }

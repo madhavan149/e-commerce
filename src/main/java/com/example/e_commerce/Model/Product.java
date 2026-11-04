@@ -42,4 +42,11 @@ public class Product {
         stockQuantity -= qty;
     }
 
+    public void restock(long qty) {
+        if (stockQuantity == null) {
+            stockQuantity = 0L;
+        }
+        stockQuantity += qty;
+    }
+
 }

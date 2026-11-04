@@ -13,7 +13,6 @@ public class ProductRequest {
     @NotBlank(message = "Name is required")
     private String name;
 
-
     private String description;
 
     @NotNull(message = "Price is required")

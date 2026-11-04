@@ -40,4 +40,22 @@ public class OrderFacade {
             }
         }
     }
+
+    public OrderResponse cancelOrder(Long orderId, Long userId) {
+        int attempt = 0;
+
+        while (true) {
+            try {
+                return orderService.cancelOrder(orderId, userId);
+            } catch (ObjectOptimisticLockingFailureException e) {
+                if (++attempt >= MAX_ATTEMPTS) throw e;
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw e;
+                }
+            }
+        }
+    }
 }

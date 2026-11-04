@@ -36,4 +36,11 @@ public class OrderController {
                 .orElseThrow(() -> new IllegalStateException("User not found"))
                 .getId();
    }
+
+   @PatchMapping("/{id}/cancel")
+   public OrderResponse cancleOrder(@PathVariable Long id, Authentication auth){
+        return orderFacade.cancelOrder(id, UserId(auth));
+   }
+
+
 }

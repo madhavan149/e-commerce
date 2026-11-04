@@ -9,6 +9,7 @@ public enum OrderStatus {
     OUT_FOR_DELIVERY,
     DELIVERED;
 
+
     public boolean canMoveTo(OrderStatus next) {
         return switch (this) {
             case CREATED          -> next == CONFIRMED || next == CANCELLED;

@@ -22,6 +22,7 @@ public class Order {
     private Long userId;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
     private OrderStatus status = OrderStatus.CREATED;
 
     @Column(nullable = false)
