@@ -7,6 +7,10 @@ import com.example.e_commerce.Service.OrderFacade;
 import com.example.e_commerce.Service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +27,21 @@ public class OrderController {
     public OrderResponse placeOrder(@Valid @RequestBody OrderRequest request, Authentication auth){
 
         return orderFacade.placeOrder(UserId(auth), request);
+    }
+
+    @GetMapping
+    public Page<OrderResponse> myOrder(@RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "10")int size,
+                                       Authentication auth){
+
+        if (page < 0 || size < 1) {
+            throw new IllegalArgumentException("Invalid pagination parameters");
+        }
+
+        Pageable pageable = PageRequest.of(page, Math.min(size, 30),
+                Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        return orderService.getOrder(UserId(auth), pageable);
     }
 
     @GetMapping("/{id}")

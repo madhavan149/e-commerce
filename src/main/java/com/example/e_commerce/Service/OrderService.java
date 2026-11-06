@@ -10,6 +10,8 @@ import com.example.e_commerce.Model.Product;
 import com.example.e_commerce.Repository.OrderRepository;
 import com.example.e_commerce.Repository.ProductRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -76,6 +78,13 @@ public class OrderService {
         return OrderResponse.from(saved);
     }
 
+    @Transactional()
+    public Page<OrderResponse> getOrder(Long userId, Pageable pageable) {
+
+        return orderRepository.findByUserId(userId, pageable)
+                .map(OrderResponse::from);
+    }
+
     public OrderResponse getMyOrder(Long id, Long userId) {
 
         return orderRepository.findByIdAndUserId(id, userId)
@@ -111,6 +120,7 @@ public class OrderService {
         return OrderResponse.from(order);
 
     }
+
 
 
 }
